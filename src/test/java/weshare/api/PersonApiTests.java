@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 public class PersonApiTests extends ApiTestRunner {
 
     @Test
@@ -46,14 +47,29 @@ public class PersonApiTests extends ApiTestRunner {
     }
 
     @Test
-    @DisplayName("POST /people")
-    public void post() {
+    @DisplayName("Not exists POST /people")
+    public void postPersonNotExists() {
         LoginDTO dto = new LoginDTO();
-        dto.setEmail("student" + scenario.getUnusedPersonId() + "@wethinkcode.co.za");
+        int id = scenario.getUnusedPersonId();
+        dto.setEmail("student" + id + "@wethinkcode.co.za");
         HttpResponse<JsonNode> response = Unirest.post("/people")
                 .body(dto)
                 .asJson();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getObject().getInt("id")).isEqualTo(id);
+    }
+
+    @Test
+    @DisplayName("Exists POST /people")
+    public void postPersonExists() {
+        LoginDTO dto = new LoginDTO();
+        Person person = scenario.somePerson();
+        dto.setEmail(person.getEmail());
+        HttpResponse<JsonNode> response = Unirest.post("/people")
+            .body(dto)
+            .asJson();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getObject().getInt("id")).isEqualTo(person.getId());
     }
 
     @Test
