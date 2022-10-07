@@ -157,8 +157,14 @@ public class WeShareService {
         return paymentDAO().findByPerson(person);
     }
 
+    @Deprecated
     public static Optional<Person> findPersonByEmail(String email) {
         return personDAO().findByEmail(email);
+    }
+
+    public static Person findPersonByEmailOrCreate(String email) {
+        Optional<Person> maybePerson = personDAO().findByEmail(email);
+        return maybePerson.orElse(new Person(email));
     }
 
 }

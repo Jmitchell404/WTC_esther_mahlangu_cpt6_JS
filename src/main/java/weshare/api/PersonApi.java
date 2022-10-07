@@ -37,7 +37,7 @@ public class PersonApi {
     public static void create(Context ctx) {
         Optional<LoginDTO> loginDTO = ApiHelper.validLogin(ctx);
         if (loginDTO.isPresent()) {
-            Person person = new Person(loginDTO.get().getEmail());
+            Person person = WeShareService.findPersonByEmailOrCreate(loginDTO.get().getEmail());
             ctx.json(WeShareService.savePerson(person));
             ctx.status(HttpCode.OK);
         } else {
