@@ -1,7 +1,23 @@
+var person_details = ""
+
+const defaultTemplate = Handlebars.compile($('#default-template').html());
+const loginPage = Handlebars.compile($('#login-template').html());
+
+const app = $('#app');
+
+const router = new Router({
+    mode:'hash',
+    root:'index.html',
+    page404: (path) => {
+        const html = defaultTemplate();
+        app.html(html);
+    }
+});
+
 function login() {
     console.log('login');
     const form = document.getElementById("login-form");
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const data = new FormData(form);
@@ -17,7 +33,33 @@ function login() {
 
         // document.getElementById('results').innerHTML = `<p>Searching for <em>${word}'</em>...</p>`;
 
-        fetch(`http://localhost:5050/people`, options)
+        let response = await fetch(`http://localhost:5050/people`, options)
+        response = await response.json();
+        person_details = response;
+        router.navigateTo("/expenses")
+    });;
+}
+
+function paymentRequestReceived(){
+    console.log('paymentrequestreceived');
+    const form = document.getElementById("payment-request-rececieved");
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const data = new FormData(form);
+        const personId = {"email": data.get("email")};
+        
+        const options = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(email)
+        };
+
+        // document.getElementById('results').innerHTML = `<p>Searching for <em>${word}'</em>...</p>`;
+
+        fetch(`http://localhost:5050/paymentrequests/received/${personId}`, options)
             .then(response => response.json())
             .then(data => {
                 data = {
@@ -30,22 +72,11 @@ function login() {
 
   // tag::router[]
 window.addEventListener('load', () => {
-    const app = $('#app');
-    
-    const defaultTemplate = Handlebars.compile($('#default-template').html());
-    // const loginPage = Handlebars.compile($('#login-template').html());
     // const thesaurusTemplate = Handlebars.compile($('#thesaurus-template').html());
     // const antonymTemplate = Handlebars.compile($('#antonym-template').html());
     // const synonymTemplate = Handlebars.compile($('#synonym-template').html());
     
-    const router = new Router({
-    mode:'hash',
-    root:'index.html',
-    page404: (path) => {
-        const html = defaultTemplate();
-        app.html(html);
-    }
-});
+    
 
 // router.add('/dictionary', async () => {
 //     html = dictionaryTemplate();
@@ -80,12 +111,13 @@ router.addUriListener();
 //     router.navigateTo(path);
 // });
 
-// router.add('/login', async () => {
-//     html = loginPage();
-//     app.html(html);
-// });
+router.add('/login', async () => {
+    console.log('login');
+    html = loginPage();
+    app.html(html);
+    login();
+});
 
-router.navigateTo('/');
-login()
+router.navigateTo('/login');
 });
   // end::router[]
