@@ -51,9 +51,31 @@
 <!--                <input id="submit" type="submit" value="Submit"/>-->
             </from>
         </script>
-            <script id="payment-request-rececieved" type="text/handlebars-template">
-            
-            </script>
+            <script id="payment-request-rececieved-template" type="text/handlebars-template">
+            <h2>People that you owe</h2>
+            <div id="results_payment-request-rececieved"></div>
+        </script>
+
+        <script id="result_payment_request_recieved_template" type="text/handlebars-template">
+            <table>
+                <tr>
+                    <th>Who</th>
+                    <th>What</th>
+                    <th>Due In (days)</th>
+                    <th>How Much</th>
+                </tr>
+
+                {{#each data}}
+                    <tr>
+                        <td id="who">{{who}}</td>
+                        <td id="expenseId">{{expenseId}}</td>
+                        <td id="date">{{date}}</td>
+                        <td id="amount">{{amount}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+        </script>
+
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vanilla-router@1.2.8/index.min.js"></script>
