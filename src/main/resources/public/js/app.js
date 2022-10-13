@@ -39,12 +39,13 @@ function login() {
         response = await response.json();
         person_details = response;
         router.navigateTo("/paymentrequests_recieved")
+        viewNav();
     });;
 }
 
 async function paymentRequestReceived(){
     console.log('paymentrequestreceived');
-    
+
     const personId = person_details.id;
 
     const options = {
@@ -62,18 +63,14 @@ async function paymentRequestReceived(){
             data = {
                 info: data
             };
-            
-            var request = {data:[]}
+
+
             JSON.stringify(data.info)
+            data_list=[]
+            var count_amount = 0;
             data.info.forEach(element => {
-                // request.data.push(element.id);
-                // request.data.push(element.date);
-                // request.data.push(element.expenseId);
-                // request.data.push(element.amount);
-                // request.data.push(element.fromPersonId);
-                // request.data.push(element.toPersonId);
-                // request.data.push(element.isPaid);
-                request.data.push({
+                count_amount = count_amount + element.amount;
+                data_list.push({
                     id: element.id,
                     date: element.date,
                     expenseId: element.expenseId,
@@ -83,6 +80,10 @@ async function paymentRequestReceived(){
                     paid: element.isPaid
                 });
             });
+            // request.data.push({grand_total: count_amount});
+            var request = {data: data_list,
+                grand_total: count_amount
+            }
             console.log(request);
             const template = document.getElementById('result_payment_request_recieved_template').innerText;
             const compiledFunction = Handlebars.compile(template);
@@ -91,6 +92,10 @@ async function paymentRequestReceived(){
     
         // .then(response => response.json())
         // .then(data => {});;
+}
+
+function viewNav() {
+    document.getElementById('nav-bar').innerHTML = document.getElementById('nav-bar-template').innerText;
 }
 
 function newExpense(){
