@@ -3,6 +3,7 @@ var person_details = ""
 const defaultTemplate = Handlebars.compile($('#default-template').html());
 const loginPage = Handlebars.compile($('#login-template').html());
 const paymentRequestReceivedPage = Handlebars.compile($('#payment-request-rececieved-template').html());
+const newExpensesPage = Handlebars.compile($('#new-expense-template').html());
 
 const app = $('#app');
 
@@ -94,7 +95,7 @@ async function paymentRequestReceived(){
 
 function newExpense(){
     console.log('newexpense');
-    const form = document.getElementById("new-expense");
+    const form = document.getElementById("new-expense-template");
     form.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -145,6 +146,12 @@ window.addEventListener('load', () => {
 //     app.html(html);
 //     lookupAntonym();
 // });
+
+router.add('/new_expenses', async () => {
+    html = newExpensesPage();
+    app.html(html);
+    newExpense();
+});
 
 router.add('/paymentrequests_recieved', async () => {
     html = paymentRequestReceivedPage();
