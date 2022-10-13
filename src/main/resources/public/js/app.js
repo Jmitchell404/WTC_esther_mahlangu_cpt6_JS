@@ -98,6 +98,11 @@ function viewNav() {
     document.getElementById('nav-bar').innerHTML = document.getElementById('nav-bar-template').innerText;
 }
 
+// function paymentRequestSent(){
+//     console.log('paymentrequestsent');
+// }
+
+
 function newExpense(){
     console.log('newexpense');
     const form = document.getElementById("new-expense-template");
@@ -132,8 +137,8 @@ window.addEventListener('load', () => {
     // const thesaurusTemplate = Handlebars.compile($('#thesaurus-template').html());
     // const antonymTemplate = Handlebars.compile($('#antonym-template').html());
     // const synonymTemplate = Handlebars.compile($('#synonym-template').html());
-    
-    
+
+
 
 // router.add('/dictionary', async () => {
 //     html = dictionaryTemplate();
@@ -182,4 +187,121 @@ router.add('/login', async () => {
 
 router.navigateTo('/login');
 });
+
+//LOGIN ROUTER
+
+router.add('/login', async () => {
+    html = loginPage();
+    app.html(html);
+    login();
+});
+
+//MERGED THIS INTO THE FILE
+router.navigateTo('/login');
+
+window.addEventListener('load', () => {
+    const loginTemplate = Handlebars.compile($('#login-template').html());
+    const html = loginTemplate();
+    app.html(html);
+    login();
+});
+
+router.add('/login', async () => {
+    html = loginTemplate();
+    app.html(html);
+    login();
+});
+
+router.navigateTo('/login');
+
+router.add('/paymentrequests_sent', async () => {
+    html = paymentRequestSentPage();
+    app.html(html);
+    paymentRequestSent();
+});
+
+router.add('/new_expenses', async () => {
+    html = newExpensesPage();
+    app.html(html);
+    newExpense();
+});
+
+router.add('/paymentrequests_recieved', async () => {
+    html = paymentRequestReceivedPage();
+    app.html(html);
+    paymentRequestReceived();
+});
+
+router.navigateTo('/login');
+
+router.add('/login', async () => {
+    html = loginTemplate();
+    app.html(html);
+    login();
+});
+
+router.navigateTo('/login');
+
+router.add('/paymentrequests_sent', async () => {
+    html = paymentRequestSentPage();
+    app.html(html);
+    paymentRequestSent();
+});
+
+router.add('/new_expenses', async () => {
+    html = newExpensesPage();
+    app.html(html);
+    newExpense();
+});
+
+router.add('/paymentrequests_recieved', async () => {
+    html = paymentRequestReceivedPage();
+    app.html(html);
+    paymentRequestReceived();
+});
+
+router.navigateTo('/login');
+
+router.add('/login', async () => {
+    html = loginTemplate();
+    app.html(html);
+    login();
+});
+
+router.navigateTo('/login');
+
+router.add('/paymentrequests_sent', async () => {
+    html = paymentRequestSentPage();
+    app.html(html);
+    paymentRequestSent();
+});
+
+router.add('/new_expenses', async () => {
+    html = newExpensesPage();
+    app.html(html);
+    newExpense();
+});
+
+router.add('/paymentrequests_recieved', async () => {
+    html = paymentRequestReceivedPage();
+    app.html(html);
+});
+
+//ADDED THIS, NOT SURE IF WE NEED IT. i JUST MERGERED THE TWO FILES
+
+fetch('/api/login', {
+    method: 'POST',
+    body: JSON.stringify({
+        email: 'user@example.com'
+    }),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+}).then(response => {
+    if (response.redirected) {
+        window.location.href = response.url;
+    }
+});
+
+
   // end::router[]
