@@ -18,12 +18,6 @@
         <div>
             <h1>WeShare</h1>
         </div>
-
-        <div id="app"></div>
-        <script id="default-template" type="text/handlebars-template">
-            <p>You are not logged in!</p>
-        </script>
-
         <script id="login-template" type="text/handlebars-template">
             <form id="login-form" enctype="application/x-www-form-urlencoded">
                 <label for="email">Enter your email</label>
@@ -31,10 +25,35 @@
                 <input id="submit" type="submit" value="Login"/>
             </form>
         </script>
+        <div id="app"></div>
+        <script id="default-template" type="text/handlebars-template">
+            <p id="user" th:text="${session.user.email}" email></p>
+            <nav>
+                <a id="expenses" href="/expenses">Expenses</a>
+                <a id="paymentrequests_sent" href="/paymentrequests_sent">Payment Requests Sent</a>
+                <a id="paymentrequests_received" href="/paymentrequests_received">Payment Request Received</a>
 
-        <script id="payment-request-rececieved" type="text/handlebars-template">
-            
+                <!--Replace the contents inside the <a> tag with the value of the name property of user
+                prefixed by the word `Logout `.-->
+                <a href="/logout" id="logout" th:text="'Logout ' + ${session.user.name}">Logout email</a>
+            </nav>
+            <p>You are not logged in!</p>
         </script>
+
+        <script id="new-expense" type="text/handlebars-template">
+            <from id="new-expense" enctype="application/x-www-form-urlencoded">
+                <label for="description">Description</label><br />
+                <input name="description" id="description" type="text" autofocus required><br />
+                <label for="date">Date [dd/mm/yyyy i.e: 5/11/1761]</label><br />
+                <input name="date" id="date" type="text" required><br />
+                <label for="amount">Amount</label><br />
+                <input name="amount" id="amount" type="number" required><br />
+<!--                <input id="submit" type="submit" value="Submit"/>-->
+            </from>
+        </script>
+            <script id="payment-request-rececieved" type="text/handlebars-template">
+            
+            </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vanilla-router@1.2.8/index.min.js"></script>

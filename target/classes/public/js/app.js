@@ -70,6 +70,35 @@ function paymentRequestReceived(){
     });;
 }
 
+function newExpense(){
+    console.log('newexpense');
+    const form = document.getElementById("new-expense");
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const data = new FormData(form);
+        const personId = {"email": data.get("email")};
+
+        const options = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(email)
+        };
+
+        // document.getElementById('results').innerHTML = `<p>Searching for <em>${word}'</em>...</p>`;
+
+        fetch(`http://localhost:5050/newexpense/received/${personId}`, options)
+            .then(response => response.json())
+            .then(data => {
+                data = {
+                    email: data.email,
+                }
+                console.log(JSON.stringify(data));
+            });
+    });;
+}
   // tag::router[]
 window.addEventListener('load', () => {
     // const thesaurusTemplate = Handlebars.compile($('#thesaurus-template').html());
