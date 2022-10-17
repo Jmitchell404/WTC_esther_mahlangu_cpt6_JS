@@ -28,6 +28,38 @@
                 <input id="submit" type="submit" value="Login"/>
             </form>
         </script>
+
+        <script id="payment-request-template" type="text/handlebars-template">
+            <h2>Submit a payment request for the following expense</h2>
+            <table>
+                <tr>
+                    <td colspan="3">Date</td>
+                    <td align="right" id="expense_date"><span>2022-09-05</span></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Description</td>
+                    <td align="right" id="expense_description"><span>Dinner</span></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Amount</td>
+                    <td align="right" id="expense_amount"><span>ZAR 300.00</span></td>
+                </tr>
+            </table>
+            
+            <form id="payment-request-form" enctype="application/x-www-form-urlencoded">
+                <label for="email">The email address of the person that should pay you</label>
+                <input name="email" id="email" type="email" autofocus required/>
+
+                <label for="amount">The amount they should pay (maximum ZAR 300.00!)</label>
+                <input name="amount" id="amount" type="number" autofocus required/>
+
+                <label for="due_date">By when must this claim be settled (dd/mm/yyyy)</label>
+                <input name="due_date" id="due_date" type="date" autofocus required/>
+
+                <input id="submit" type="submit" value="Submit"/>
+            </form>
+        </script>
+
         <div id="app"></div>
         <script id="default-template" type="text/handlebars-template">
             <p id="user" th:text="${session.user.email}" email></p>
@@ -82,13 +114,13 @@
                         <td id="who"><span>{{who}}</span></td>
                         <td id="expenseId"><span>{{expenseId}}</span></td>
                         <td id="date"><span>{{date}}</span></td>
-                        <td id="amount"><span>{{amount}}</span></td>
+                        <td id="amount"><span>ZAR {{amount}}</span></td>
                     </tr>
                 {{/each}}
                 
                 <tfoot>
                     <td colspan="3">Total Unpaid</td>
-                    <td align="right" id="grand_total"><span>{{grand_total}}</span></td>
+                    <td align="right" id="grand_total"><span>ZAR {{grand_total}}</span></td>
                 </tfoot>
             </table>
         </script>

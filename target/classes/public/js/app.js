@@ -72,7 +72,7 @@ async function paymentRequestReceived(){
                 count_amount = count_amount + element.amount;
                 data_list.push({
                     id: element.id,
-                    date: element.date,
+                    date: getDueDate(element.date),
                     expenseId: element.expenseId,
                     amount: element.amount,
                     who: "Student"+element.fromPersonId,
@@ -94,9 +94,57 @@ async function paymentRequestReceived(){
         // .then(data => {});;
 }
 
+function createPaymentRequest() {
+    console.log('payment request create');
+    const form = document.getElementById("payment-request-form");
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const data = new FormData(form);
+        const email = {"email": data.get("email")};
+        
+        const options = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(email)
+        };
+
+        // document.getElementById('results').innerHTML = `<p>Searching for <em>${word}'</em>...</p>`;
+
+        let response = await fetch(`http://localhost:5050/paymentrequests`, options)
+        response = await response.json();
+        person_details = response;
+        router.navigateTo("/paymentrequests_recieved")
+        viewNav();
+    });;
+}
+
+/**
+ * Calculates the due date from today and when it is due.
+ * @param {*} date // takes a parameter of date
+ * @returns the due date.
+ */
+function getDueDate(date) {
+    var then = new Date(date.split('/')[2],
+    date.split('/')[1],
+    date.split('/')[0]), // YYYY/MM/DD
+    now  = new Date;     // no arguments -> current date
+
+    // 24 hours, 60 minutes, 60 seconds, 1000 milliseconds
+    return Math.round((then - now) / (1000 * 60 * 60 * 24)); // round the amount of days
+    // result: 712
+}
+
 function viewNav() {
     document.getElementById('nav-bar').innerHTML = document.getElementById('nav-bar-template').innerText;
 }
+
+// function paymentRequestSent(){
+//     console.log('paymentrequestsent');
+// }
+
 
 function newExpense(){
     console.log('newexpense');
@@ -127,13 +175,9 @@ function newExpense(){
             });
     });;
 }
-  // tag::router[]
+
+// tag::router[]
 window.addEventListener('load', () => {
-    // const thesaurusTemplate = Handlebars.compile($('#thesaurus-template').html());
-    // const antonymTemplate = Handlebars.compile($('#antonym-template').html());
-    // const synonymTemplate = Handlebars.compile($('#synonym-template').html());
-    
-    
 
 // router.add('/dictionary', async () => {
 //     html = dictionaryTemplate();
@@ -174,12 +218,20 @@ router.addUriListener();
 //     router.navigateTo(path);
 // });
 
+// LOGIN ROUTER
 router.add('/login', async () => {
     html = loginPage();
     app.html(html);
     login();
 });
 
+router.add('/paymentrequests_sent', async () => {
+    html = paymentRequestSentPage();
+    app.html(html);
+    paymentRequestSent();
+});
+
 router.navigateTo('/login');
 });
+
   // end::router[]
